@@ -1,0 +1,20 @@
+# enivornment files
+.venv/
+.pytest_cache
+**__pycache__/
+db.sqlite3
+.env
+.coverage
+.vscode
+
+#project aren't completed 
+Heroku_schedular/
+Heroku_Scheduler_1.0/
+new_project/
+2FA_django/
+2FA_Flask/
+Chat_room/
+
+
+#firebase json file 
+FireBase_img_upload/imageupload/imageupload/sampleproject-311f3-firebase-adminsdk-8i3o9-2437106f41.json
