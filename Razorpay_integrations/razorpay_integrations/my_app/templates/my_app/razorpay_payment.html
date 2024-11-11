@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Razorpay Payment{% endblock %}
+{% block content %}
+<h2>Pay with Razorpay</h2>
+<form action="{% url 'success' %}" method="POST">
+    {% csrf_token %}
+    <script src="https://checkout.razorpay.com/v1/checkout.js"
+            data-key="{{ razorpay_key }}"
+            data-amount="{{ order.amount }}"
+            data-currency="INR"
+            data-order_id="{{ order.id }}"
+            data-buttontext="Pay with Razorpay">
+    </script>
+    <input type="hidden" name="transaction_id" value="{{ transaction_id }}">
+</form>
+{% endblock %}

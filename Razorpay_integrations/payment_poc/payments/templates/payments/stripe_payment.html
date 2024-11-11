@@ -1,0 +1,75 @@
+{% extends 'payments/base.html' %}
+
+{% block title %}Stripe Payment{% endblock %}
+
+{% block content %}
+<h2>Pay with Stripe</h2>
+<form id="payment-form">
+    <div class="mb-3">
+        <label for="card-element" class="form-label">Credit or debit card</label>
+        <div id="card-element" class="form-control">
+            <!-- A Stripe Element will be inserted here. -->
+        </div>
+        <!-- Used to display form errors -->
+        <div id="card-errors" role="alert" class="text-danger mt-2"></div>
+    </div>
+    <button id="submit" class="btn btn-success">Pay</button>
+    <input type="hidden" id="transaction_id" value="{{ transaction_id }}">
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    const stripe = Stripe('{{ stripe_publishable_key }}');
+    const elements = stripe.elements();
+    const card = elements.create('card');
+    card.mount('#card-element');
+
+    card.addEventListener('change', ({error}) => {
+        const displayError = document.getElementById('card-errors');
+        if (error) {
+            displayError.textContent = error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const {error, paymentIntent} = await stripe.confirmCardPayment('{{ client_secret }}', {
+            payment_method: {
+                card: card,
+            }
+        });
+
+        if (error) {
+            // Show error to your customer (e.g., insufficient funds)
+            const errorElement = document.getElementById('card-errors');
+            errorElement.textContent = error.message;
+        } else {
+            if (paymentIntent.status === 'succeeded') {
+                // The payment has been processed!
+                const transactionId = document.getElementById('transaction_id').value;
+                fetch("{% url 'stripe_success' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    body: new URLSearchParams({
+                        'transaction_id': transactionId
+                    })
+                })
+                .then(response => {
+                    window.location.href = "{% url 'success' %}";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+    });
+</script>
+{% endblock %}

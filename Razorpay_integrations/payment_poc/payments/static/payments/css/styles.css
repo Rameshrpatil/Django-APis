@@ -1,0 +1,19 @@
+/* payments/static/payments/css/styles.css */
+
+body {
+    padding-top: 70px;
+}
+
+.jumbotron {
+    background-color: #f8f9fa;
+    padding: 2rem 1rem;
+    border-radius: 0.3rem;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+}

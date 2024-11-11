@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Stripe Payment{% endblock %}
+{% block content %}
+<h2>Pay with Stripe</h2>
+<div id="card-element"></div>
+<button id="payButton">Pay with Stripe</button>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('{{ stripe_publishable_key }}');
+    var clientSecret = "{{ client_secret }}";
+
+    document.getElementById("payButton").addEventListener("click", function() {
+        stripe.confirmCardPayment(clientSecret, {
+            payment_method: { card: stripe.elements().create('card').mount('#card-element') }
+        }).then(function(result) {
+            if (result.error) {
+                console.error(result.error.message);
+            } else {
+                window.location.href = "{% url 'success' %}";
+            }
+        });
+    });
+</script>
+{% endblock %}

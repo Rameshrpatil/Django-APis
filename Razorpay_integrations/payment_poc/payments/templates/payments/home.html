@@ -1,0 +1,14 @@
+{% extends 'payments/base.html' %}
+
+{% block title %}Home - Payment POC{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to the Payment POC</h1>
+    <p class="lead">This is a simple Django application to demonstrate payment integrations using Razorpay and Stripe.</p>
+    <hr class="my-4">
+    <p>Select a payment gateway to proceed.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'razorpay_payment' %}" role="button">Pay with Razorpay</a>
+    <a class="btn btn-success btn-lg" href="{% url 'stripe_payment' %}" role="button">Pay with Stripe</a>
+</div>
+{% endblock %}

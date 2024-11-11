@@ -1,0 +1,12 @@
+{% extends 'payments/base.html' %}
+
+{% block title %}Payment Success{% endblock %}
+
+{% block content %}
+<div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Payment Successful!</h4>
+    <p>Your payment has been processed successfully. Thank you for your purchase.</p>
+    <hr>
+    <a href="{% url 'home' %}" class="btn btn-primary">Go Back Home</a>
+</div>
+{% endblock %}

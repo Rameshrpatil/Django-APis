@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Work</title>
+	<style>
+	body{
+			background-image: url(https://images.unsplash.com/photo-1493723843671-1d655e66ac1c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80);
+		}
+		div{
+		position:absolute;
+		right:10px;
+		top:5px;
+		}
+		input{
+			margin-top:20px;
+			height: 30px;
+			width: 150px;
+			padding: 12px 20px;
+			border-radius: 5px;
+			color: black;
+		}
+		input[type="submit"]{
+			background-color: rgba(7, 179, 185, 0.753);
+			color: rgb(255, 255, 255);
+			border: none;
+			border-radius: 5px;
+		}
+		button{
+			background-color: rgba(7, 179, 185, 0.753);
+			color: white;
+			width: 150px;
+			height: 30px;
+			border: none;
+			border-radius: 5px;
+			opacity: 0.3;
+		}
+	</style>
+</head>
+<body>
+<div>
+{% comment %} <button type="button" onclick="location.href='{% url 'log' %}' ">Logout</button> {% endcomment %}
+	</div>
+<h2>Add Image</h2>
+<form action="/postcreate/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Title:</label>
+    <input type="text" name="work" required><br><br>
+    <label>Type Something:</label>
+    <textarea rows="5" cols="40" name="progress" required></textarea><br><br>
+    <label>Document Upload:</label>
+    <input type="file" name="files[]" id="files"><br><br>
+    <input type="submit" value="Submit"><br><br>
+</form>
+</body>
+<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
+<script>
+function uploadimage() {
+    var file = document.getElementById("files").files[0];
+    var storageRef = firebase.storage().ref(file.name);
+
+    storageRef.put(file).then(function(snapshot) {
+        storageRef.getDownloadURL().then(function(url) {
+            document.getElementById("url").value = url;
+            alert("Uploaded successfully!");
+        });
+    }).catch(function(error) {
+        console.error("Error uploading file:", error);
+    });
+}, function(error) {
+console.log('Error',error);
+
+}, function() {
+// Uploaded completed successfully, now we can get the download URL
+thisref.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+	console.log('File available at', downloadURL);
+	document.getElementById("url").value=downloadURL;
+	alert('uploaded successfully');
+});
+};
+</script>
+</html>
